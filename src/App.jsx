@@ -1,9 +1,14 @@
+import { AuthProvider } from "./context/AuthProvider";
+import { ToastContainer } from "react-toastify";
+
 function App() {
   return (
-    <div className="container mt-5">
-      <h1 className="text-primary">TaskForge</h1>
-      <button className="btn btn-primary mt-3">Test Button</button>
-    </div>
+    <AuthProvider>
+      <div className="container mt-5">
+        <h1 className="text-primary">TaskForge</h1>
+        <ToastContainer position="top-right" autoClose={3000} />
+      </div>
+    </AuthProvider>
   );
 }
 
