@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import API from "../api/axios";
 import { toast } from "react-toastify";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const { login, token } = useAuth();
@@ -13,6 +14,7 @@ const Login = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   if (token) {
     return <Navigate to="/" />;
@@ -97,15 +99,24 @@ const Login = () => {
             <label className="form-label" style={{ fontSize: "13px" }}>
               Password
             </label>
-            <input
-              type="password"
-              className="form-control"
-              name="password"
-              placeholder="Enter your password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+            <div className="position-relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="form-control"
+                name="password"
+                placeholder="Enter your password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+              <span
+                onClick={() => setShowPassword(!showPassword)}
+                className="position-absolute top-50 end-0 translate-middle-y me-3"
+                style={{ cursor: "pointer", color: "#64748B" }}
+              >
+                {showPassword ? <FaEye size={16} /> : <FaEyeSlash size={16} />}
+              </span>
+            </div>
           </div>
 
           <button
