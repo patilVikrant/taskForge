@@ -32,7 +32,7 @@ const Login = () => {
     setLoading(true);
     try {
       const response = await API.post("/auth/login", formData);
-      console.log(response);
+      // console.log(response);
       login(response.data.user, response.data.token);
       toast.success("Logged in successfully!");
       navigate("/");
