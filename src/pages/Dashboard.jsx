@@ -4,6 +4,7 @@ import API from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import ProjectCard from "../components/ProjectCard";
 import StatusBadge from "../components/StatusBadge";
+import TaskModal from "../components/TaskModal";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -16,22 +17,23 @@ const Dashboard = () => {
   // console.log(projects);
   // console.log(tasks);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [projectsRes, tasksRes] = await Promise.all([
-          API.get("/projects"),
-          API.get("/tasks"),
-        ]);
-        setProjects(projectsRes.data.projects.slice(0, 3));
-        setTasks(tasksRes.data.tasks.slice(0, 5));
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const [projectsRes, tasksRes] = await Promise.all([
+        API.get("/projects"),
+        API.get("/tasks"),
+      ]);
+      setProjects(projectsRes.data.projects.slice(0, 3));
+      setTasks(tasksRes.data.tasks.slice(0, 5));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchData();
   }, []);
 
@@ -67,18 +69,7 @@ const Dashboard = () => {
                 Here's what's happening today
               </p>
             </div>
-            <button
-              className="btn fw-bold"
-              style={{
-                backgroundColor: "#4F46E5",
-                color: "white",
-                borderRadius: "8px",
-                fontSize: "13px",
-                padding: "8px 16px",
-              }}
-            >
-              <span style={{ fontSize: "16px" }}>+</span> New Task
-            </button>
+            <TaskModal onTaskCreated={fetchData} />
           </div>
 
           {/* projects */}
