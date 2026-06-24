@@ -18,13 +18,26 @@ const Dashboard = () => {
   // console.log(tasks);
 
   const fetchData = async () => {
+    setLoading(true);
     try {
       const [projectsRes, tasksRes] = await Promise.all([
         API.get("/projects"),
         API.get("/tasks"),
       ]);
-      setProjects(projectsRes.data.projects.slice(0, 3));
-      setTasks(tasksRes.data.tasks.slice(0, 5));
+
+      const allProjects = projectsRes.data.projects;
+      const allTasks = tasksRes.data.tasks;
+
+      const latestProjects = allProjects
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 3);
+
+      const latestTasks = allTasks
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 5);
+
+      setProjects(latestProjects);
+      setTasks(latestTasks);
     } catch (error) {
       console.log(error);
     } finally {
