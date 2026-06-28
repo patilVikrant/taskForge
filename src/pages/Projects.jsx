@@ -14,13 +14,16 @@ const Projects = () => {
 
   // console.log(projects);
   // console.log(loading);
-  console.log(projectFormData);
+  // console.log(projectFormData);
 
   const fetchProjects = async () => {
     setLoading(true);
     try {
       const response = await API.get("/projects");
-      setProjects(response.data.projects);
+      const sortedProjects = response.data.projects.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+      );
+      setProjects(sortedProjects);
     } catch (error) {
       console.log(error);
     } finally {
